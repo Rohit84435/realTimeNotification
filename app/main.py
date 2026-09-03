@@ -1,4 +1,4 @@
-from fastapi import FastAPI,status, HTTPException,Query
+from fastapi import FastAPI,status, HTTPException,Query , WebSocket
 from pydantic import BaseModel, Field
 
 
@@ -65,3 +65,11 @@ async def get_notification(notification_id: int):
         "title":"Order update",
         "message" : "Your order has shipped"
     }
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket:WebSocket):
+    await websocket.accept()
+    while True:
+        message = await websocket.receive_text()
+        print("This is connected message ->",message)
+        # await websocket.send_text(message)
