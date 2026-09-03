@@ -1,4 +1,4 @@
-from fastapi import FastAPI,status
+from fastapi import FastAPI,status, HTTPException,Query
 from pydantic import BaseModel, Field
 
 
@@ -29,8 +29,11 @@ async def health():
 
 
 @app.get("/notifications")
-async def get_notifications():
-    return []
+async def get_notifications(unread:bool=False, limit:int = Query(ge=1,le=100)):
+    return {
+        "unread":unread,
+        "limit":limit
+    }
 
 
 @app.get("/about")
@@ -49,4 +52,16 @@ async def create_notification(notification: NotificationCreate):
         "user_id": notification.user_id,
         "title": notification.title,
         "message": notification.message,
+    }
+
+@app.get("/notifications/{notification_id}")
+async def get_notification(notification_id: int):
+    if notification_id != 1:
+        raise HTTPException(status_code=404,detail="Notification not found")
+
+    return {
+        "id":1,
+        "user_id": "rohit",
+        "title":"Order update",
+        "message" : "Your order has shipped"
     }
