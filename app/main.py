@@ -72,4 +72,4 @@ async def websocket_endpoint(websocket:WebSocket):
     while True:
         message = await websocket.receive_text()
         print("This is connected message ->",message)
-        # await websocket.send_text(message)
+        await websocket.send_text(message)
