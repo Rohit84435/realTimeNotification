@@ -15,7 +15,7 @@
     <p id="output"></p>
 
     <script>
-        const socket = new WebSocket("ws://127.0.0.1:8000/ws");
+        const socket = new WebSocket("ws://127.0.0.1:8000/ws/alice");
 
         socket.onopen = function () {
             document.getElementById("output").innerText = "Connected!";
