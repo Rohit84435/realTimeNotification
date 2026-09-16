@@ -35,6 +35,7 @@ class ConnectionManager:
     
     async def send_to_user(self, user_id, message):
         
+        print("Creating notifiaction for : ", user_id)
         if user_id in self.active_connections:
             
             for websocket in self.active_connections[user_id]:
@@ -74,7 +75,14 @@ async def about_me():
 @app.post("/notifications", response_model=NotificationResponse,status_code=status.HTTP_201_CREATED)
 async def create_notification(notification: NotificationCreate):
     
-    await manager.send_to_user(user_id=notification.user_id, message=notification.message)
+    notification_data = {
+    "id": 1,
+    "user_id": notification.user_id,
+    "title": notification.title,
+    "message": notification.message,
+    }
+    
+    await manager.send_to_user(user_id=notification.user_id, message=notification_data)
     return {
         "id": 1,
         "user_id": notification.user_id,
